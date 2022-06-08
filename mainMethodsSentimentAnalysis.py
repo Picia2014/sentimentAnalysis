@@ -58,6 +58,7 @@ class mainMethodsSentimentAnalysis:
                 watek.start()
                 watek.join()
                 counter = counter + 1
+                print("next run of the loop")
         print("Wszystkie wątki zakończyly pracę")
         print("list of corpuses")
         print(self.listOfCorpuses)
