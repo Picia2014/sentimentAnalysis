@@ -2,16 +2,15 @@ from textblob import TextBlob
 from textblob.sentiments import NaiveBayesAnalyzer
 import nltk
 nltk.download('punkt')
-import Transformer
+import transformers
 
 
-class sentimentAnalysis:
-    def __init__(self, text):
-        self.text = text
-
+class basicSentimentAnalysis:
+    def __init__(self, listOfDirectories):
+        self.tr = transformers.transformers()
+        self.listOfDirectories = listOfDirectories
         #polarity [-1;1] where -1 very negative, 1 very positive
         #subjectivity [0.0, 1.0] where 0 is objective sentence and 1 is subjective sentence
-
 
 
     def analyzeSentiment_PatternAnalyzer(self):
@@ -43,7 +42,7 @@ class sentimentAnalysis:
         return (analysisPol, analysisSub)
 
     def frequencyDistribution(self, number):
-        tr = Transformer.transformers()
+        tr = self.tr.transformers()
         t = tr.tokenize_many_texts(self.text)
         text = [word.lower() for word in t]
         text = [word for word in text if word.isalpha()]
@@ -65,5 +64,22 @@ class sentimentAnalysis:
         print(results)
         return results
 
+    def __createCorpusOfAllTextsFromParticularFolderSoAboutOneCompany(self):
+        # create a corpus of all texts in a particular folder for every company separately
+        import transformers
+        listOfCorpuses = []
+        tt = self.tr.transformers()
+        for subfolder in self.listOfDirectories:
+            print("subfolder", subfolder)
+            joinedTextFilesForOneCompany = tt.joinManyTextsFromSubfolder(subfolder)
+            listOfCorpuses.append([subfolder, joinedTextFilesForOneCompany])
+        #print("list of corpuses")
+        print(listOfCorpuses)
+        return listOfCorpuses
+
+
+
     #continue from this webpage https://realpython.com/python-nltk-sentiment-analysis/
     # TODO: freqanalysis of good an bad words separately
+
+

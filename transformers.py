@@ -1,48 +1,6 @@
-#spacy
-#empath
-#evaluate
-#bert
-#liwc
-#NLTK
-
-#def parts_of_speech():
-#    import spacy
-#
-#    spacy.prefer_gpu()
-#    import en_core_web_sm
-#    nlp = en_core_web_sm.load()
-#
-#    nlp = spacy.load("en_core_web_sm")
-#    doc = nlp("Apple is looking at buying U.K. startup for $1 billion")
-#
-#    for token in doc:
-#        print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
-#              token.shape_, token.is_alpha, token.is_stop)
-
-#def lemmatizer():
-#    import spacy
-#
-#    # English pipelines include a rule-based lemmatizer
-#    nlp = spacy.load("en_core_web_sm")
-#    lemmatizer = nlp.get_pipe("lemmatizer")
-#    print(lemmatizer.mode)  # 'rule'
-
-#    doc = nlp("I was reading the paper.")
-#    print([token.lemma_ for token in doc])
-#    # ['I', 'be', 'read', 'the', 'paper', '.']
-
-
-
-
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
-from sklearn.base import TransformerMixin
-from sklearn.svm import LinearSVC
-from sklearn.pipeline import Pipeline
-import spacy
 import nltk
-from nltk.corpus import stopwords
+#from nltk.corpus import stopwords
 import pandas as pd
 
 class transformers:
@@ -52,11 +10,19 @@ class transformers:
 
     def joinManyTextsFromSubfolder(self, subfolder):
         text = ""
-        for file in subfolder:
-            try:
-                text = text + file.text()
-            except:
-                pass
+        import glob
+        for filename in glob.iglob(subfolder, recursive=True):
+            if filename.endswith(".txt"):
+                try:
+                    with open(filename) as f:
+                        contents = f.read()
+                        f.close()
+                    text = text + contents
+                    continue
+                except:
+                    pass
+            else:
+                continue
         return text
 
     def tokenize_one_text(self, text):
@@ -98,3 +64,38 @@ class transformers:
         df = pd.DataFrame(X.toarray())
         print(df)
         return df
+
+    # spacy
+    # empath
+    # evaluate
+    # bert
+    # liwc
+    # NLTK
+
+    # def parts_of_speech():
+    #    import spacy
+    #
+    #    spacy.prefer_gpu()
+    #    import en_core_web_sm
+    #    nlp = en_core_web_sm.load()
+    #
+    #    nlp = spacy.load("en_core_web_sm")
+    #    doc = nlp("Apple is looking at buying U.K. startup for $1 billion")
+    #
+    #    for token in doc:
+    #        print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
+    #              token.shape_, token.is_alpha, token.is_stop)
+
+    # def lemmatizer():
+    #    import spacy
+    #
+    #    # English pipelines include a rule-based lemmatizer
+    #    nlp = spacy.load("en_core_web_sm")
+    #    lemmatizer = nlp.get_pipe("lemmatizer")
+    #    print(lemmatizer.mode)  # 'rule'
+
+    #    doc = nlp("I was reading the paper.")
+    #    print([token.lemma_ for token in doc])
+    #    # ['I', 'be', 'read', 'the', 'paper', '.']
+
+
