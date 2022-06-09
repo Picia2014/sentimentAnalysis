@@ -13,54 +13,54 @@ class basicSentimentAnalysis:
         #subjectivity [0.0, 1.0] where 0 is objective sentence and 1 is subjective sentence
 
 
-    def analyzeSentiment_PatternAnalyzer(self):
-        analysis = TextBlob(self.text).sentiment
+    def analyzeSentiment_PatternAnalyzer(self, text):
+        analysis = TextBlob(text).sentiment
         print(analysis)
         return analysis
 
-    def analyzePolarity_PatternAnalyzer(self):
-        analysisPol = TextBlob(self.text).polarity
-        analysisSub = TextBlob(self.text).subjectivity
+    def analyzePolarity_PatternAnalyzer(self, text):
+        analysisPol = TextBlob(text).polarity
+        analysisSub = TextBlob(text).subjectivity
         print(analysisPol)
         print(analysisSub)
         return (analysisPol, analysisSub)
 
-    def analyzeSentiment_NaiveBayesAnalyzer(self):
+    def analyzeSentiment_NaiveBayesAnalyzer(self, text):
         # Applying the NaiveBayesAnalyzer
         # Running sentiment analysis
-        analysisPol = TextBlob(self.text, analyzer=NaiveBayesAnalyzer()).polarity
-        analysisSub = TextBlob(self.text, analyzer=NaiveBayesAnalyzer()).subjectivity
+        analysisPol = TextBlob(text, analyzer=NaiveBayesAnalyzer()).polarity
+        analysisSub = TextBlob(text, analyzer=NaiveBayesAnalyzer()).subjectivity
         print("Sentiment(polarity=", analysisPol, ", subjectivity=",analysisSub,")")
         return("Sentiment(polarity=",analysisPol, ", subjectivity=",analysisSub,")")
 
 
-    def analyzePolarity_NaiveBayesAnalyzer(self):
-        analysisPol = TextBlob(self.text, analyzer=NaiveBayesAnalyzer()).polarity
-        analysisSub = TextBlob(self.text, analyzer=NaiveBayesAnalyzer()).subjectivity
+    def analyzePolarity_NaiveBayesAnalyzer(self, text):
+        analysisPol = TextBlob(text, analyzer=NaiveBayesAnalyzer()).polarity
+        analysisSub = TextBlob(text, analyzer=NaiveBayesAnalyzer()).subjectivity
         print(analysisPol)
         print(analysisSub)
         return (analysisPol, analysisSub)
 
-    def frequencyDistribution(self, number):
+    def frequencyDistribution(self, number, text):
         tr = self.tr.transformers()
-        t = tr.tokenize_many_texts(self.text)
+        t = tr.tokenize_many_texts(text)
         text = [word.lower() for word in t]
         text = [word for word in text if word.isalpha()]
         fd = nltk.FreqDist(text)
         print(fd.most_common(number))
         return fd.most_common(number)
 
-    def concordanceList(self, word):
-        text = nltk.Text(self.text)
+    def concordanceList(self, word, text):
+        text = nltk.Text(text)
         concordance_list = text.concordance_list(word, lines = 2)
         for entry in concordance_list:
             print(entry.line)
 
-    def NLTKSentiment(self):
+    def NLTKSentiment(self, text):
         from nltk.sentiment import SentimentIntensityAnalyzer
         nltk.download('vader_lexicon')
         sia = SentimentIntensityAnalyzer()
-        results = sia.polarity_scores(self.text)
+        results = sia.polarity_scores(text)
         print(results)
         return results
 

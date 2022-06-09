@@ -48,6 +48,7 @@ class mainMethodsSentimentAnalysis:
         #we use class object listOfCorpuses because we want to save it, it takes ages to process it
         # self.listOfCorpuses = [] - I changed into class object
         counter = 1
+        threads = []
         for subfolder in self.listOfDirectories:
                 def metoda():
                     print("subfolder" ,subfolder)
@@ -57,11 +58,14 @@ class mainMethodsSentimentAnalysis:
                 print(watek, "started")
                 watek.start()
                 watek.join()
+                threads.append(watek)
                 counter = counter + 1
                 print("next run of the loop")
+        for t in threads:
+            t.join()
         print("Wszystkie wątki zakończyly pracę")
         print("list of corpuses")
-        print(self.listOfCorpuses)
+        #print(self.listOfCorpuses)
         return self.listOfCorpuses
 
     def runSentimentAnalysisForEveryCompany(self):
@@ -71,10 +75,10 @@ class mainMethodsSentimentAnalysis:
         results = []
         self.listOfCorpuses = self.__joinTextsForCompanies()
         for company in self.listOfCorpuses:
-            se = self.bs.sentimentAnalysis(company[1])
-            sent1 = se.analyzeSentiment_PatternAnalyzer()
-            sent2 = se.analyzeSentiment_NaiveBayesAnalyzer()
-            sent3 = se.NLTKSentiment()
+            se = basicSentimentAnalysis.basicSentimentAnalysis(company[1])
+            sent1 = se.analyzeSentiment_PatternAnalyzer(company[1])
+            sent2 = se.analyzeSentiment_NaiveBayesAnalyzer(company[1])
+            sent3 = se.NLTKSentiment(company[1])
             print(sent1)
             print(sent2)
             print(sent3)
@@ -95,7 +99,7 @@ class mainMethodsSentimentAnalysis:
         results = []
         for companyFolder in self.listOfDirectories:
             for file in companyFolder:
-                se = self.bs.sentimentAnalysis(file)
+                se = basicSentimentAnalysis.basicSentimentAnalysis(file)
                 sent1 = se.analyzeSentiment_PatternAnalyzer()
                 sent2 = se.analyzeSentiment_NaiveBayesAnalyzer()
                 sent3 = se.NLTKSentiment()
