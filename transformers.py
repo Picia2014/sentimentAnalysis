@@ -2,11 +2,65 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 import nltk
 #from nltk.corpus import stopwords
 import pandas as pd
+import os
+import traceback
 
 class transformers:
 
-    def __init__(self):
-        pass
+    def __init__(self, mainCatalog, dictionaryOfFirmNamesWithTickers, threshold):
+        self.mainCatalog = mainCatalog
+        self.dictionaryOfFirmNamesWithTickers = dictionaryOfFirmNamesWithTickers
+        self.threshold = threshold
+
+
+    def iterateOverMainFolderAndRemoveTextsWithNotEnoughReferencesToACompany(self):
+        for root, subdirectories, files in os.walk(self.mainCatalog):
+            for subdirectory in subdirectories:
+                print("subdirectory", subdirectory, "--------------------------------------------------------")
+                key = subdirectory
+                synonyms = self.dictionaryOfFirmNamesWithTickers[subdirectory]
+                print("subdirectory", subdirectory, "key", key, "synonyms", synonyms)
+                subdirectoryFullAddress = os.path.join(root, subdirectory)
+                self.__applyRemovalMethodOtoAllFilesInASubfolder(subdirectoryFullAddress, key, synonyms)
+
+
+    # def __matchSubfolderWithKey(self, key):
+        ##finds the subfolder inside mainCatalog which has the same name as a company we look for
+        # for root, subdirectories, files in os.walk(self.mainCatalog):
+        #     for subdirectory in subdirectories:
+        #         if subdirectory.lower()==key.lower():
+        #             return os.path.join(root, subdirectory)
+
+    def __applyRemovalMethodOtoAllFilesInASubfolder(self, subdirectory, key, synonyms):
+        ##takes a method and applies to all files
+        ##intention is to apply check whether file contains more than 2 occurrences of company name or synonyms
+        ## if not, method deletes the file
+        for root, subdirectories, files in os.walk(subdirectory):
+            for file in files:
+                fileFullAddress = os.path.join(root, file)
+                print("fileFullAddress", fileFullAddress)
+                self.__removeFileIfLowNumberOfCompanyWords(fileFullAddress, key, synonyms)
+
+    def __removeFileIfLowNumberOfCompanyWords(self, fileFullAddress, key, synonyms):
+        #threshold defines how many occurrences of key words must be to keep the file
+        ##function returns True/False about removal of the file
+        occurrences = 0
+        try:
+            file = open(fileFullAddress, "r")
+            text = file.read()
+            occurrences = text.count(key)
+            print("key occurrences", key, occurrences)
+            for synonym in synonyms:
+                occurrences = occurrences + text.count(synonym)
+            print("synonyms occurrences", synonyms, occurrences-text.count(key))
+            file.close()
+            if occurrences < self.threshold:
+                print(key, synonyms, occurrences)
+                print("file to be removed:", file)
+                #os.remove(file)
+                return True
+        except: traceback.print_exc()
+        return False
 
     def joinManyTextsFromSubfolder(self, subfolder):
         text = ""
