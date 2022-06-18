@@ -4,9 +4,15 @@ import mainMethodsSentimentAnalysis
 import transformers
 
 if __name__ == '__main__':
-    #Settings
+
+    ##Settings
     listOfWords = ['company','court', 'lawsuit', 'fraud', 'suspicion', 'police', 'investigation']
     mainCatalog = 'd:/Crawler'
+    dictionaryOfFirmNamesWithTickers = {"Tesla": ["TSLA", "Musk", "Elon Musk"], "Apple": ["AAPL", "Steve Jobs"], "Amazon": ["AMZN", "Jeff Besos"], "Meta": ["META"], "Toyota": ["TM"]}
+
+    ##clear files with low number of occurrences of key words
+    tr = transformers.transformers(mainCatalog, dictionaryOfFirmNamesWithTickers, 3)
+    tr.iterateOverMainFolderAndRemoveTextsWithNotEnoughReferencesToACompany()
 
     #create a list of subdirectories with which we will work
     fw = findWords.findWords(listOfWords, mainCatalog)
