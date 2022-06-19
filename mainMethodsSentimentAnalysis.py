@@ -10,9 +10,11 @@ class mainMethodsSentimentAnalysis:
     #class takes as the argument the address of the main catalog with investors opinions
     #class takes as the argument list of words which signal possibility of a fraud
 
-    def __init__(self, mainCatalog, listOfWords):
+    def __init__(self, mainCatalog, listOfWords, dictionaryOfFirmNamesWithTickers, threshold):
         self.mainCatalog = mainCatalog # we will iterate over it to find all subfolders, each subfolder is 1 company
         self.listOfWords = listOfWords # which word we will be looking for
+        self.dictionaryOfFirmNamesWithTickers = dictionaryOfFirmNamesWithTickers
+        self.threshold = threshold
         # make a list of subfolders in a directory
         self.fw = findWords.findWords(self.listOfWords, self.mainCatalog)
         self.subFolders = self.fw.listSubdirectories()
@@ -22,8 +24,8 @@ class mainMethodsSentimentAnalysis:
             self.listOfDirectories.append(address)
         print("list of directories" ,self.listOfDirectories)
         self.listOfCorpuses = [] # we will keep here joined texts
-        self.tr = transformers.transformers()
-        self.bs = basicSentimentAnalysis.basicSentimentAnalysis(self.listOfDirectories)
+        self.tr = transformers.transformers(self.mainCatalog, self.dictionaryOfFirmNamesWithTickers, self.threshold)
+        self.bs = basicSentimentAnalysis.basicSentimentAnalysis(self.listOfDirectories, self.mainCatalog, self.dictionaryOfFirmNamesWithTickers, self.threshold)
         self.sentimentForEveryCompany = []
 
 

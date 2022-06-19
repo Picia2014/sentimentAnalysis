@@ -6,9 +6,12 @@ import transformers
 
 
 class basicSentimentAnalysis:
-    def __init__(self, listOfDirectories):
-        self.tr = transformers.transformers()
+    def __init__(self, listOfDirectories, mainCatalog, dictionaryOfFirmNamesWithTickers, threshold):
         self.listOfDirectories = listOfDirectories
+        self.mainCatalog = mainCatalog
+        self.dicionaryOfFirmNamesWithTickers = dictionaryOfFirmNamesWithTickers
+        self.threshold = threshold
+        self.tr = transformers.transformers(self.mainCatalog, self.dicionaryOfFirmNamesWithTickers, self.threshold)
         #polarity [-1;1] where -1 very negative, 1 very positive
         #subjectivity [0.0, 1.0] where 0 is objective sentence and 1 is subjective sentence
 
@@ -42,8 +45,7 @@ class basicSentimentAnalysis:
         return (analysisPol, analysisSub)
 
     def frequencyDistribution(self, number, text):
-        tr = self.tr.transformers()
-        t = tr.tokenize_many_texts(text)
+        t = self.tr.tokenize_many_texts(text)
         text = [word.lower() for word in t]
         text = [word for word in text if word.isalpha()]
         fd = nltk.FreqDist(text)

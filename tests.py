@@ -6,28 +6,33 @@ class Tests:
 
     def __init__(self):
         # text tokenization
-        sentence = "Alicia has a cat. A cat has got Alicia"
-        self.tr = transformers.transformers()
-        self.bs = basicSentimentAnalysis.basicSentimentAnalysis()
+        self.sentence2 = "I am really concerned about Bitcoin prices. There is a lot of decreases in the market, investors do not seem to believe that it can maintain its value. Market prices crashed."
+        self.sentence2 = "I hate Russia for what they did to Ukraine. I wish it was president Putin's children who died in this war. I can now see how Adolf Hitler raised to power and how he misused this power. Thousands of innocent people die because of his imperialistic ambitions."
+        self.sentence = "Ukraine is fighting for survival. They managed to defend their country against stronger occupant for more than 3 months. Whole Europe supports Ukraine in their fight for freedom."
+        self.listOfWords = ['company', 'court', 'lawsuit', 'fraud', 'suspicion', 'police', 'investigation']
+        self.mainCatalog = 'd:/Crawler'
+        self.dictionaryOfFirmNamesWithTickers = {"Tesla": ["TSLA", "Musk", "Elon Musk"], "Apple": ["AAPL", "Steve Jobs"],
+                                            "Amazon": ["AMZN", "Jeff Besos"], "Meta": ["META"], "Toyota": ["TM"]}
+        self.listOfDirectories = ["d:/Crawler/Amazon/", "d:/Crawler/Tesla/"]
 
+        self.tr = transformers.transformers(self.mainCatalog, self.dictionaryOfFirmNamesWithTickers, threshold=3)
+        self.bs = basicSentimentAnalysis.basicSentimentAnalysis(self.listOfDirectories, self.mainCatalog, self.dictionaryOfFirmNamesWithTickers, threshold=3)
 
     def callTests(self):
-        print(self.tr.tokenize_many_texts("Ala ma kota. Kot ma Alę."))
+        print(self.tr.tokenize_many_texts(self.sentence))
         #   sentiment analysis
-        classSentObject = self.bs.sentimentAnalysis("The platform provides universal access to the world's best education, partnering with top universities and organizations to offer courses online. Fraud shall not take place. Universities enjoy it it.")
-        print("zero")
-        classSentObject.frequencyDistribution(3)
+        self.bs.frequencyDistribution(3, self.sentence)
         print("one")
-        classSentObject.analyzeSentiment_PatternAnalyzer()
+        self.bs.analyzeSentiment_PatternAnalyzer(self.sentence)
         print("two")
-        classSentObject.analyzePolarity_PatternAnalyzer()
+        self.bs.analyzePolarity_PatternAnalyzer(self.sentence)
         print("three")
-        classSentObject.analyzePolarity_NaiveBayesAnalyzer()
+        self.bs.analyzePolarity_NaiveBayesAnalyzer(self.sentence)
         print("four")
-        classSentObject.analyzeSentiment_NaiveBayesAnalyzer()
+        self.bs.analyzeSentiment_NaiveBayesAnalyzer(self.sentence)
         print("five")
-        classSentObject.frequencyDistribution(3)
+        self.bs.frequencyDistribution(3, self.sentence)
         print("six")
-        classSentObject.concordanceList("fraud")
+        self.bs.concordanceList("fraud", self.sentence)
         print("seven")
-        classSentObject.NLTKSentiment()
+        self.bs.NLTKSentiment(self.sentence)

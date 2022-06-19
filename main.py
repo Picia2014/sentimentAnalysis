@@ -1,7 +1,11 @@
+import phpBB_scraper
+
 import findWords
 import basicSentimentAnalysis
 import mainMethodsSentimentAnalysis
 import transformers
+import tests
+#from phpBB_scraper.phpBB_scraper.spiders import phpBB
 
 if __name__ == '__main__':
 
@@ -10,22 +14,30 @@ if __name__ == '__main__':
     mainCatalog = 'd:/Crawler'
     dictionaryOfFirmNamesWithTickers = {"Tesla": ["TSLA", "Musk", "Elon Musk"], "Apple": ["AAPL", "Steve Jobs"], "Amazon": ["AMZN", "Jeff Besos"], "Meta": ["META"], "Toyota": ["TM"]}
 
+    ## run some basic tests
+    #myTests = tests.Tests()
+    #myTests.callTests()
+
     ##clear files with low number of occurrences of key words
-    tr = transformers.transformers(mainCatalog, dictionaryOfFirmNamesWithTickers, 3)
-    tr.iterateOverMainFolderAndRemoveTextsWithNotEnoughReferencesToACompany()
+    # tr = transformers.transformers(mainCatalog, dictionaryOfFirmNamesWithTickers, 3)
+    # tr.iterateOverMainFolderAndRemoveTextsWithNotEnoughReferencesToACompany()
 
 
     ##create a list of subdirectories with which we will work
-    fw = findWords.findWords(listOfWords, mainCatalog)
-    catalogs = fw.listSubdirectories()
+    # fw = findWords.findWords(listOfWords, mainCatalog)
+    # catalogs = fw.listSubdirectories()
 
     ##iterate over every catalog and count word instances
     ##every catalog is another company
-    ms = mainMethodsSentimentAnalysis.mainMethodsSentimentAnalysis(mainCatalog, listOfWords)
-    wordOccurrences = ms.countWordOccurrences()
+    #ms = mainMethodsSentimentAnalysis.mainMethodsSentimentAnalysis(mainCatalog, listOfWords, dictionaryOfFirmNamesWithTickers, 3)
+    #wordOccurrences = ms.countWordOccurrences()
 
     ## analyze sentiment of joined texts on every company
-    ms.runSentimentAnalysisForEveryCompany()
+    #ms.runSentimentAnalysisForEveryCompany()
+
+    #scraper test
+
+
 
 
 
