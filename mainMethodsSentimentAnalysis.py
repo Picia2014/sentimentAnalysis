@@ -77,7 +77,7 @@ class mainMethodsSentimentAnalysis:
         results = []
         self.listOfCorpuses = self.__joinTextsForCompanies()
         for company in self.listOfCorpuses:
-            se = basicSentimentAnalysis.basicSentimentAnalysis(company[1])
+            se = basicSentimentAnalysis.basicSentimentAnalysis(self.mainCatalog, self.dictionaryOfFirmNamesWithTickers, 3)
             sent1 = se.analyzeSentiment_PatternAnalyzer(company[1])
             sent2 = se.analyzeSentiment_NaiveBayesAnalyzer(company[1])
             sent3 = se.NLTKSentiment(company[1])
