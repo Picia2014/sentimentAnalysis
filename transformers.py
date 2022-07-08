@@ -7,6 +7,9 @@ import traceback
 
 class transformers:
 
+    # klasa przetwarza pliki w katalogu
+    # klasa także usuwa komunikaty z niewystarczającą liczbą powtórzeń dla danej spółki
+
     def __init__(self, mainCatalog, dictionaryOfFirmNamesWithTickers, threshold):
         self.mainCatalog = mainCatalog
         self.dictionaryOfFirmNamesWithTickers = dictionaryOfFirmNamesWithTickers

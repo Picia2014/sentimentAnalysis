@@ -4,6 +4,13 @@ import nltk
 nltk.download('punkt')
 import transformers
 
+# podstawowe narzędzia analizy sentymentu
+# klasa bierze jako argumenty adres głównego katalogu oraz listę podkatalogów (inna klasa je wyodrębnia)
+# threshold oznacza liczbę słów kluczowych jakie muszą być w dokumencie aby był uznawany za istotny
+# słownik to lista słów kluczowych uznawana za identyfikatory firm jest tutaj tylko po to aby
+# było wygodnie przekazywać ten słownik pomiędzy klasami, ale klasa go nie używa
+# ona już dostaje wyczyszczone komunikaty które dotyczą spółek
+# tutaj używam biblioteki textblob
 
 class basicSentimentAnalysis:
     def __init__(self, listOfDirectories, mainCatalog, dictionaryOfFirmNamesWithTickers, threshold):

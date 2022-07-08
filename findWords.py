@@ -3,6 +3,10 @@ address = "d:/Crawler"
 
 class findWords:
 
+    # klasa liczy słowa dotyczące oszustw ile razy pojawiają się w danym komunikacie
+    # klasa także przetwarza katalogi aby z nich stworzyć korpusy
+    # czyli iteruje po podkatalogach i robi listę spółek
+
     def __init__(self, listOfWords, mainCatalog):
         self.listOfWords = listOfWords
         self.mainCatalog = mainCatalog
